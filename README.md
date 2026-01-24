@@ -15,7 +15,7 @@ This project is a technical assessment for **DIRO App**, demonstrating a **Clean
 
 **Frontend:**
 
-- **Next.js 15** (App Router & Server Actions)
+- **Next.js 16** (App Router & Server Actions)
 - **Tailwind CSS v4** + **Shadcn UI** (For a clean, modern aesthetic)
 - **React Query** (Server state management)
 
