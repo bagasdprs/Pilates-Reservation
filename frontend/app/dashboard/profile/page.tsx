@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,7 +29,7 @@ function ProfilePage() {
     }
   };
 
-  // Logic delete penyakit
+  // Logic delete disease
   const removeCondition = (tag: string) => {
     setConditions(conditions.filter((c) => c !== tag));
   };
@@ -60,7 +61,7 @@ function ProfilePage() {
 
             <div className="relative mb-4">
               <div className="h-24 w-24 rounded-full bg-zinc-200 border-4 border-white shadow-md overflow-hidden">
-                <img src="https://github.com/shadcn.png" alt="Profile" className="h-full w-full object-cover" />
+                <Image src="https://github.com/shadcn.png" alt="Profile" fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
               </div>
               <button className="absolute bottom-0 right-0 bg-primary text-white p-1.5 rounded-full shadow-sm hover:bg-primary/90 transition-all">
                 <Camera className="h-4 w-4" />
@@ -111,7 +112,6 @@ function ProfilePage() {
         <div className="flex-1">
           <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm min-h-[600px] overflow-hidden">
             <Tabs defaultValue="basic" className="w-full">
-              {/* Header Tabs */}
               {/* --- UPDATE: TABS NAVIGATION --- */}
               <div className="border-b border-zinc-200 px-6 pt-6">
                 <h1 className="text-2xl font-bold mb-1">Profile Settings</h1>

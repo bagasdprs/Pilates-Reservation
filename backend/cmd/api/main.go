@@ -4,12 +4,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/bagas/diro-pilates-backend/internal/entity"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+
+	"github.com/bagas/diro-pilates-backend/internal/handler"
+	"github.com/bagas/diro-pilates-backend/internal/repository"
+	"github.com/bagas/diro-pilates-backend/internal/service"
+	"github.com/bagas/diro-pilates-backend/pkg/database"
 )
 
 func main() {
@@ -18,43 +20,62 @@ func main() {
 		log.Println("Warning: .env file not found")
 	}
 
-	// 2. Connect to Supabase PostgreSQL
-	dsn := os.Getenv("DATABASE_URL")
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// 2. CONNECT DATABASE
+	db, err := database.ConnectDB()
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		log.Fatalf("❌ Failed to connect database: %v", err)
 	}
 
-	// 3. Auto Migrate
-	err = db.AutoMigrate(&entity.User{}, &entity.Court{}, &entity.Booking{})
-	if err != nil {
-		log.Fatal("Failed to migrate database:", err)
-	}
+	// 3. DEPENDENCY INJECTION (WIRING)
 
-	log.Println("Database connected & migrated successfully!")
+	// Layer 1: Repository
+	profileRepo := repository.NewProfileRepository(db)
 
-	// 4. Setup Gin Router
+	// Layer 2: Service
+	profileService := service.NewProfileService(profileRepo)
+
+	// Layer 3: Handler
+	profileHandler := handler.NewProfileHandler(profileService)
+
+	// 4. SETUP ROUTER
 	r := gin.Default()
 
 	// Setup CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, // Frontend origin
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		AllowCredentials: true,
 	}))
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-			"status":  "Backend is running!",
+	// 5. REGISTER ROUTES
+	api := r.Group("/api")
+	{
+		// Check Server
+		api.GET("/ping", func(c *gin.Context) {
+			c.JSON(200, gin.H{"message": "pong", "status": "Backend OK!"})
 		})
-	})
 
-	// Run Server
+		// Routes Profile
+		// POST /api/register -> Create new user
+		api.POST("/register", profileHandler.CreateUser) // Endpoint create dummy data
+		api.POST("/login", profileHandler.Login) 				 // Endpoint login by email
+
+		// GET /api/profile/1  -> Get data user ID 1
+		api.GET("/profile/:id", profileHandler.GetProfile)
+
+		// PUT /api/profile/1  -> Update data user ID 1
+		api.PUT("/profile/:id", profileHandler.UpdateProfile)
+	}
+
+	// 6. RUN SERVER
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
-	r.Run(":" + port)
+
+	log.Printf("🚀 Server running on port %s", port)
+	if err := r.Run(":" + port); err != nil {
+		log.Fatalf("Failed to run server: %v", err)
+	}
 }

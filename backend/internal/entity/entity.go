@@ -1,20 +1,78 @@
 package entity
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
 	"time"
+
+	"github.com/lib/pq"
 )
 
-// User: User doing bookings
+// --- SUB-STRUCTS (Helper for JSONB) ---
+
+type EmergencyContact struct {
+	Name     string `json:"name"`
+	Phone    string `json:"phone"`
+	Relation string `json:"relation"`
+}
+
+type NotificationPrefs struct {
+	ClassReminders  bool `json:"class_reminders"`
+	MarketingEmails bool `json:"marketing_emails"`
+	SystemUpdates   bool `json:"system_updates"`
+}
+
+// Interface implementation for GORM JSONB handling
+func (a EmergencyContact) Value() (driver.Value, error) {
+	// return json.Marshal(a)
+	b, err := json.Marshal(a)
+	return string(b), err
+}
+func (a *EmergencyContact) Scan(value interface{}) error {
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+	return json.Unmarshal(b, &a)
+}
+
+func (a NotificationPrefs) Value() (driver.Value, error) {
+	// return json.Marshal(a)
+	b, err := json.Marshal(a)
+	return string(b), err
+}
+func (a *NotificationPrefs) Scan(value interface{}) error {
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+	return json.Unmarshal(b, &a)
+}
+
+// --- MAIN STRUCT ---
 type User struct {
 	ID        uint           `gorm:"primaryKey" json:"id"`
-	Name      string         `json:"name"`
+	FirstName	string         `json:"first_name"`
+	LastName  string         `json:"last_name"`
+
 	Email     string         `gorm:"unique" json:"email"`
 	Phone     string         `json:"phone"`
-	NIK          string    `json:"nik"`           // NIK KTP (String 16 digit)
-	Gender       string    `json:"gender"`        // "Male" / "Female"
-	ImageProfile string    `json:"image_profile"` // URL Photo
+	NIK          string    `json:"nik"`
+	Gender       string    `json:"gender"`
+	ImageProfile string    `json:"image_profile"`
 	Address      string    `json:"address" gorm:"type:text"`
-	Role      string         `json:"role" gorm:"default:'member'"` // member, admin
+	Role      string         `json:"role" gorm:"default:'member'"`
+
+	MembershipTier  string            `json:"membership_tier" gorm:"default:'free'"`
+	MembershipExpiry *time.Time `json:"membership_expiry"`
+
+	MedicalConditions pq.StringArray `json:"medical_conditions" gorm:"type:text[]"`
+	PhysicalGoals     pq.StringArray `json:"physical_goals" gorm:"type:text[]"`
+
+	EmergencyContact EmergencyContact  `json:"emergency_contact" gorm:"type:jsonb"`
+	NotificationPrefs NotificationPrefs `json:"notification_prefs" gorm:"type:jsonb"`
+
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 }
@@ -22,8 +80,8 @@ type User struct {
 // Court: Resource being booked
 type Court struct {
 	ID        uint           `gorm:"primaryKey" json:"id"`
-	Name      string         `json:"name"` // e.g., "Reformer 1"
-	Type      string         `json:"type"` // e.g., "reformer", "mat"
+	Name      string         `json:"name"`
+	Type      string         `json:"type"`
 }
 
 // Booking: Transaction entity
@@ -32,16 +90,25 @@ type Booking struct {
 	UserID    uint           `json:"user_id"`
 	CourtID   uint           `json:"court_id"`
 
-	// Time Data
-	Date      time.Time      `json:"date" gorm:"type:date"` // YYYY-MM-DD
-	StartTime string         `json:"start_time"`            // "09:00"
-	EndTime   string         `json:"end_time"`              // "10:00"
+	Date      time.Time      `json:"date" gorm:"type:date"`
+	StartTime string         `json:"start_time"`
+	EndTime   string         `json:"end_time"`
 
-	Status    string         `json:"status" gorm:"default:'confirmed'"` // confirmed, cancelled
+	Status    string         `json:"status" gorm:"default:'confirmed'"`
 
-	// Relations
 	User      User           `gorm:"foreignKey:UserID"`
 	Court     Court          `gorm:"foreignKey:CourtID"`
 
 	CreatedAt time.Time      `json:"created_at"`
+}
+
+type Invoice struct {
+	ID            uint      `gorm:"primaryKey" json:"id"`
+	UserID        uint      `json:"user_id"`
+	InvoiceNumber string    `json:"invoice_number"`
+	Amount        float64   `json:"amount"`
+	Status        string    `json:"status"`
+	Date          time.Time `json:"date"`
+
+	User          User      `gorm:"foreignKey:UserID"`
 }

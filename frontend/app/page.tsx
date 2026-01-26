@@ -12,7 +12,10 @@ function Page() {
         <Link href="/dashboard">
           <Button>Go to Dashboard</Button>
         </Link>
-        <Button variant="outline">Login</Button>
+        <Link href="/login">
+          <Button>Go to Login</Button>
+        </Link>
+        {/* <Button variant="outline">Login</Button> */}
       </div>
     </div>
   );

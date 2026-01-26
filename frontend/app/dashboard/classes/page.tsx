@@ -29,7 +29,7 @@ const DUMMY_CLASSES = [
     level: "Beginner" as const,
     spotsLeft: 8, // Masih banyak (Pink/Primary)
     totalSpots: 12,
-    image: "https://images.unsplash.com/photo-1522845036863-9c2cd011339c?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1747239685045-fcbcf98985db?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     imageAlt: "Group pilates mat session",
   },
   {
@@ -41,7 +41,7 @@ const DUMMY_CLASSES = [
     level: "Advanced" as const,
     spotsLeft: 5,
     totalSpots: 10,
-    image: "https://images.unsplash.com/photo-1606907604675-9e623403567b?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1635101003219-3c1d41f12f3f?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     imageAlt: "Pilates tower equipment",
   },
 ];
