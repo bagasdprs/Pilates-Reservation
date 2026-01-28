@@ -39,7 +39,7 @@ function LandingPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent">Diro Pilates</span>
+            <span className="text-2xl font-bold bg-linear-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent">Diro Pilates</span>
           </div>
           {/* Auth Buttons */}
           <div className="flex items-center gap-4">
@@ -57,7 +57,7 @@ function LandingPage() {
       <section className="relative pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
         {/* Background Blob (Hiasan Pink Samar) */}
         <div className="absolute top-0 right-0 -z-10 translate-x-1/3 -translate-y-1/4 transform opacity-30">
-          <div className="h-[500px] w-[500px] rounded-full bg-gradient-to-br from-pink-300 to-purple-200 blur-3xl filter" />
+          <div className="h-125 w-125 rounded-full bg-linear-to-br from-pink-300 to-purple-200 blur-3xl filter" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,10 +198,10 @@ function LandingPage() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            className="bg-gradient-to-br from-pink-600 to-pink-500 rounded-[3rem] p-12 lg:p-20 text-center text-white shadow-2xl shadow-pink-300/50 relative overflow-hidden"
+            className="bg-linear-to-br from-pink-600 to-pink-500 rounded-[3rem] p-12 lg:p-20 text-center text-white shadow-2xl shadow-pink-300/50 relative overflow-hidden"
           >
             {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
 
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 relative z-10">Ready to elevate your studio experience?</h2>
             <p className="text-xl text-pink-100 mb-10 max-w-2xl mx-auto relative z-10">Join thousands of wellness enthusiasts who have streamlined their journey with our platform.</p>
