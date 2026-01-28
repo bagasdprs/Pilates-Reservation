@@ -12,14 +12,14 @@
 
 ## 🖼️ Gallery & Features
 
-|          **Interactive Dashboard**           |          **Real-time Booking**          |
-| :------------------------------------------: | :-------------------------------------: |
-|     ![Dashboard](./assets/dashboard.png)     |    ![Booking](./assets/booking.png)     |
-| _View stats, upcoming classes, and history._ | _Select Date, Time, and Specific Spot._ |
+|           **Interactive Dashboard**           |           **Real-time Booking**           |
+| :-------------------------------------------: | :---------------------------------------: |
+| ![Dashboard](./assets/dashboard_pilates.jpeg) | ![Booking](./assets/booking_pilates.jpeg) |
+| _View stats, upcoming classes, and history._  |  _Select Date, Time, and Specific Spot._  |
 
 |          **Payment Integration**           |            **Cancellation Flow**             |
 | :----------------------------------------: | :------------------------------------------: |
-|      ![Payment](./assets/payment.png)      |        ![Cancel](./assets/cancel.png)        |
+|     ![Payment](./assets/payment.jpeg)      |   ![Cancel](./assets/cancel_booking.jpeg)    |
 | _Seamless payment simulation (QRIS/Card)._ | _Secure cancellation with slot restoration._ |
 
 ---
