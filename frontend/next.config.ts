@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "cdn.dribbble.com",
+      },
+      {
+        protocol: "https",
         hostname: "github.com",
         port: "",
         pathname: "/**",

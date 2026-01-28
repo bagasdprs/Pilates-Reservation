@@ -78,28 +78,44 @@ type User struct {
 }
 
 // Court: Resource being booked
-type Court struct {
+type Class struct {
 	ID        uint           `gorm:"primaryKey" json:"id"`
 	Name      string         `json:"name"`
-	Type      string         `json:"type"`
+	Description string  `json:"description"`
+	ImageURL    string  `json:"image_url"`
+	Price       float64 `json:"price"`
+	Duration    int     `json:"duration"`
+}
+
+// Table baru buat nyimpen jadwal yang tersedia
+type ClassSchedule struct {
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	ClassID   uint      `json:"class_id"`
+
+	Date      string    `json:"date" gorm:"type:date"`
+	StartTime string    `json:"start_time"`
+	EndTime   string    `json:"end_time"`
+
+	Instructor string   `json:"instructor"`
+	Capacity   int      `json:"capacity"`
+	Booked     int      `json:"booked" gorm:"default:0"`
+
+	Class     Class     `json:"class" gorm:"foreignKey:ClassID"`
 }
 
 // Booking: Transaction entity
 type Booking struct {
-	ID        uint           `gorm:"primaryKey" json:"id"`
-	UserID    uint           `json:"user_id"`
-	CourtID   uint           `json:"court_id"`
+	ID              uint           `gorm:"primaryKey" json:"id"`
+	UserID          uint           `json:"user_id"`
+	ClassScheduleID uint           `json:"class_schedule_id"`
+	TotalAmount     float64        `json:"total_amount"`
+	Status          string         `json:"status" gorm:"default:'confirmed'"`
+	PaymentURL      string         `json:"payment_url"`
 
-	Date      time.Time      `json:"date" gorm:"type:date"`
-	StartTime string         `json:"start_time"`
-	EndTime   string         `json:"end_time"`
+	User            User           `gorm:"foreignKey:UserID"`
+	ClassSchedule   ClassSchedule  `gorm:"foreignKey:ClassScheduleID"`
 
-	Status    string         `json:"status" gorm:"default:'confirmed'"`
-
-	User      User           `gorm:"foreignKey:UserID"`
-	Court     Court          `gorm:"foreignKey:CourtID"`
-
-	CreatedAt time.Time      `json:"created_at"`
+	CreatedAt       time.Time      `json:"created_at"`
 }
 
 type Invoice struct {

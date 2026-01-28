@@ -15,29 +15,27 @@ import (
 )
 
 func main() {
-	// 1. Load Environment Variables
+
+	// Load Environment Variables
 	if err := godotenv.Load(); err != nil {
 		log.Println("Warning: .env file not found")
 	}
 
-	// 2. CONNECT DATABASE
+	// CONNECT DATABASE
 	db, err := database.ConnectDB()
 	if err != nil {
 		log.Fatalf("❌ Failed to connect database: %v", err)
 	}
 
-	// 3. DEPENDENCY INJECTION (WIRING)
-
+	// DEPENDENCY INJECTION (WIRING)
 	// Layer 1: Repository
 	profileRepo := repository.NewProfileRepository(db)
-
 	// Layer 2: Service
 	profileService := service.NewProfileService(profileRepo)
-
 	// Layer 3: Handler
 	profileHandler := handler.NewProfileHandler(profileService)
 
-	// 4. SETUP ROUTER
+	// SETUP ROUTER
 	r := gin.Default()
 
 	// Setup CORS
@@ -48,7 +46,7 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	// 5. REGISTER ROUTES
+	// REGISTER ROUTES
 	api := r.Group("/api")
 	{
 		// Check Server
@@ -57,18 +55,22 @@ func main() {
 		})
 
 		// Routes Profile
-		// POST /api/register -> Create new user
-		api.POST("/register", profileHandler.CreateUser) // Endpoint create dummy data
-		api.POST("/login", profileHandler.Login) 				 // Endpoint login by email
-
-		// GET /api/profile/1  -> Get data user ID 1
+		api.POST("/register", profileHandler.CreateUser)
+		api.POST("/login", profileHandler.Login)
 		api.GET("/profile/:id", profileHandler.GetProfile)
-
-		// PUT /api/profile/1  -> Update data user ID 1
 		api.PUT("/profile/:id", profileHandler.UpdateProfile)
+
+		// Routes Class Schedules
+		api.GET("/schedules", handler.GetSchedules)
+		api.GET("/schedules/:id", handler.GetScheduleByID)
+
+		// Routes Bookings
+		api.POST("/bookings", handler.CreateBooking)
+		api.GET("/bookings/user/:id", handler.GetBookingsByUser)
+		api.DELETE("/bookings/:id", handler.CancelBooking)
 	}
 
-	// 6. RUN SERVER
+	// RUN SERVER
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"

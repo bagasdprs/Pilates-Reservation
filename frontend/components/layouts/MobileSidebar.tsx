@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; // Tambah useRouter
 import { Menu, LayoutDashboard, CalendarDays, User, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -17,7 +17,47 @@ const sidebarItems = [
 
 function MobileSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
+
+  // 1. STATE USER
+  const [user, setUser] = useState({ name: "Guest", role: "Member" });
+
+  // 2. FETCH USER DATA
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const storageData = localStorage.getItem("user_data");
+        if (storageData) {
+          const parsed = JSON.parse(storageData);
+
+          if (parsed.name) {
+            setUser({ name: parsed.name, role: "Member" });
+          }
+
+          const res = await fetch(`http://localhost:8080/api/profile/${parsed.id}`);
+          if (res.ok) {
+            const json = await res.json();
+            setUser({
+              name: json.data?.name || "Guest",
+              role: json.data?.role || "Member",
+            });
+          }
+        }
+      } catch (e) {
+        console.error("Gagal load user mobile sidebar", e);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // 3. FUNGSI LOGOUT
+  const handleLogout = () => {
+    localStorage.removeItem("user_data");
+    setOpen(false);
+    router.push("/login");
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -50,7 +90,6 @@ function MobileSidebar() {
                   onClick={() => setOpen(false)}
                   className={cn(
                     "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                    // Logic Warna Pink:
                     isActive ? "bg-sidebar-accent text-sidebar-primary" : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-primary",
                   )}
                 >
@@ -61,16 +100,19 @@ function MobileSidebar() {
             })}
           </nav>
 
-          {/* User Profile Snippet */}
+          {/* User Profile Snippet  */}
           <div className="border-t px-4 pt-4 border-sidebar-border">
             <div className="flex items-center gap-3 mb-4 px-2">
-              <div className="h-10 w-10 rounded-full bg-muted" />
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold text-sidebar-foreground">Bagas D.</span>
-                <span className="text-xs text-muted-foreground">Premium Member</span>
+              <div className="h-10 w-10 shrink-0 rounded-full bg-zinc-200 flex items-center justify-center text-zinc-600 font-bold border border-zinc-300">{(user?.name || "Guest").charAt(0).toUpperCase()}</div>
+
+              <div className="flex flex-col overflow-hidden">
+                <span className="truncate text-sm font-semibold text-sidebar-foreground">{user.name}</span>
+                <span className="truncate text-xs text-muted-foreground capitalize">{user.role}</span>
               </div>
             </div>
-            <Button variant="outline" className="w-full justify-start gap-2 text-red-500 hover:text-red-600 hover:bg-red-50">
+
+            {/* Tombol Logout */}
+            <Button variant="outline" onClick={handleLogout} className="w-full justify-start gap-2 text-red-500 hover:text-red-600 hover:bg-red-50">
               <LogOut className="h-4 w-4" />
               Sign Out
             </Button>

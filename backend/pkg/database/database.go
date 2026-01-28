@@ -13,6 +13,7 @@ import (
 	"github.com/bagas/diro-pilates-backend/internal/entity"
 )
 
+var DB *gorm.DB
 func ConnectDB() (*gorm.DB, error) {
 	// GET URL DATABASE from .env
 	dsn := os.Getenv("DATABASE_URL")
@@ -38,11 +39,14 @@ func ConnectDB() (*gorm.DB, error) {
 
 	log.Println("✅ Connected to Database Supabase!")
 
+	DB = db
+
 	// AUTO MIGRATION
 	log.Println("Running Auto Migration...")
 	err = db.AutoMigrate(
 		&entity.User{},
-		&entity.Court{},
+		&entity.Class{},
+		&entity.ClassSchedule{},
 		&entity.Booking{},
 		&entity.Invoice{},
 	)
@@ -52,6 +56,9 @@ func ConnectDB() (*gorm.DB, error) {
 	}
 
 	log.Println("✅ Database Migration Success!")
-
 	return db, nil
+}
+
+func GetDB() *gorm.DB {
+	return DB
 }

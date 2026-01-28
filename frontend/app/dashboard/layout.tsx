@@ -1,6 +1,12 @@
 import React from "react";
+import { Metadata } from "next";
 import Sidebar from "@/components/layouts/Sidebar";
 import MobileSidebar from "@/components/layouts/MobileSidebar";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Your personalized dashboard to track sessions and progress.",
+};
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
