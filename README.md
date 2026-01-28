@@ -51,7 +51,7 @@ Built with **Gin Gonic**, following strictly **Clean Architecture** principles t
 
 ### **Frontend (Next.js)**
 
-- **Framework:** Next.js 15 (App Router).
+- **Framework:** Next.js 16.1.6 (App Router).
 - **Styling:** Tailwind CSS v4 + Shadcn UI.
 - **State Management:** React Hooks + Server Actions.
 - **Visualization:** Recharts for user activity data.
