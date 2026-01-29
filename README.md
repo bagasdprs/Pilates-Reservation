@@ -1,6 +1,6 @@
 # 🧘‍♂️ Pilates Reservation App (Fullstack)
 
-> **Technical Assessment for DIRO App** > A high-performance booking platform built with **Next.js 15** and **Golang (Clean Architecture)**.
+> **Technical Assessment for DIRO App** > A high-performance booking platform built with **Next.js 16** and **Golang (Clean Architecture)**.
 
 ![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![Golang](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)
