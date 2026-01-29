@@ -62,105 +62,18 @@ Built with **Gin Gonic**, following strictly **Clean Architecture** principles t
 
 ```bash
 NEXT-PILATES-RESERVATION/
-├── assets/
-│   ├── booking_pilates.jpeg
-│   ├── cancel_booking.jpeg
-│   ├── dashboard_pilates.jpeg
-│   └── payment.jpeg
 ├── backend/
-│   ├── cmd/
-│   │   └── api/
-│   │       └── main.go
-│   ├── go.mod
-│   ├── go.sum
-│   └── internal/
-│       ├── config/
-│       ├── entity/
-│       │   └── entity.go
-│       ├── handler/
-│       │   ├── booking.go
-│       │   └── profile_handler.go
-│       ├── repository/
-│       │   └── profile_repo.go
-│       └── service/
-│           └── profile_service.go
+│   ├── cmd/api/          # Entry point (main.go)
+│   ├── internal/
+│   │   ├── entity/       # Database Models
+│   │   ├── handler/      # HTTP Handlers (Booking, Profile)
+│   │   ├── service/      # Business Logic
+│   │   └── repository/   # DB Operations
+│   └── pkg/database/     # DB Connection Config
 ├── frontend/
-│   ├── app/
-│   │   ├── dashboard/
-│   │   │   ├── classes/
-│   │   │   │   ├── layout.tsx
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── [classId]/
-│   │   │   │       └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx
-│   │   │   ├── profile/
-│   │   │   │   ├── layout.tsx
-│   │   │   │   └── page.tsx
-│   │   │   └── settings/
-│   │   │       ├── layout.tsx
-│   │   │       └── page.tsx
-│   │   ├── favicon.ico
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   ├── login/
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   ├── page.tsx
-│   │   └── register/
-│   │       ├── layout.tsx
-│   │       └── page.tsx
-│   ├── components/
-│   │   ├── classes/
-│   │   │   ├── ClassCard.tsx
-│   │   │   ├── DateSelector.tsx
-│   │   │   ├── PaymentWizard.tsx
-│   │   │   └── SpotSelector.tsx
-│   │   ├── layouts/
-│   │   │   ├── MobileSidebar.tsx
-│   │   │   └── Sidebar.tsx
-│   │   ├── PageTransition.tsx
-│   │   ├── settings-view/
-│   │   │   ├── AccountTab.tsx
-│   │   │   ├── BillingTab.tsx
-│   │   │   └── NotificationsTab.tsx
-│   │   └── ui/
-│   │       ├── alert-dialog.tsx
-│   │       ├── badge.tsx
-│   │       ├── button.tsx
-│   │       ├── calendar.tsx
-│   │       ├── card.tsx
-│   │       ├── dialog.tsx
-│   │       ├── form.tsx
-│   │       ├── input.tsx
-│   │       ├── label.tsx
-│   │       ├── popover.tsx
-│   │       ├── progress.tsx
-│   │       ├── select.tsx
-│   │       ├── separator.tsx
-│   │       ├── sheet.tsx
-│   │       ├── sonner.tsx
-│   │       ├── switch.tsx
-│   │       ├── table.tsx
-│   │       ├── tabs.tsx
-│   │       └── textarea.tsx
-│   ├── components.json
-│   ├── eslint.config.mjs
-│   ├── lib/
-│   │   └── utils.ts
-│   ├── next-env.d.ts
-│   ├── next.config.ts
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── postcss.config.mjs
-│   ├── public/
-│   │   ├── file.svg
-│   │   ├── globe.svg
-│   │   ├── next.svg
-│   │   ├── vercel.svg
-│   │   └── window.svg
-│   ├── README.md
-│   └── tsconfig.json
+│   ├── app/              # Next.js App Router Pages
+│   ├── components/ui/    # Reusable Shadcn Components
+│   └── lib/              # Utils & API Fetchers
 ├── LICENSE
 └── README.md
 
